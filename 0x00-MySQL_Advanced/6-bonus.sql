@@ -10,18 +10,18 @@
 DELIMITER $$;
 CREATE PROCEDURE AddBonus(IN user_id INT, IN project_name VARCHAR(255), IN score INT)
 BEGIN
-        DECLARE id INT;
+        DECLARE project_id INT;
 
         -- check if the project already exists
-        SELECT id FROM projects WHERE name = project_name;
+        SELECT id INTO project_id FROM projects WHERE name = project_name;
 
         -- if the project does not exist, create it
-        IF id IS NULL THEN
+        IF project_id IS NULL THEN
                 INSERT INTO projects (name) VALUES (project_name);
-                SET id = LAST_INSERT_ID();
+                SET project_id = LAST_INSERT_ID();
         END IF;
 
         -- Add the new correction
-        INSERT INTO corrections (user_id, project_id, score) VALUES (user_id, id, score);
+        INSERT INTO corrections (user_id, project_id, score) VALUES (user_id, project_id, score);
 END;$$
 DELIMITER ;$$
