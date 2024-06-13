@@ -9,13 +9,12 @@
 -- b, INT
 -- And returns a / b or 0 if b == 0
 DELIMITER $$
-DROP FUNCTION IF EXISTS SafeDiv;
 CREATE FUNCTION SafeDiv(a INT, b INT) RETURNS FLOAT
 BEGIN
 	IF b = 0 THEN
 		RETURN 0;
 	ELSE
-		RETURN a / b
+		RETURN a / b;
 	END IF;
 END; $$
 DELIMITER ;
