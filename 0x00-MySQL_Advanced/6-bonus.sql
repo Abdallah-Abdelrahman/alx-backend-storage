@@ -9,7 +9,7 @@
 -- Context: Write code IN SQL IS a nice level up!
 DELIMITER $$
 
-CREATE PROCEDURE AddBonus (user_id INT, project_name VARCHAR(255), score INT)
+CREATE PROCEDURE AddBonus (IN user_id INT, IN project_name VARCHAR(255), IN score INT)
     BEGIN
         DECLARE project_id INT;
 
@@ -23,7 +23,7 @@ CREATE PROCEDURE AddBonus (user_id INT, project_name VARCHAR(255), score INT)
 
         -- add NEW correction
         INSERT INTO corrections (user_id, project_id, score)
-        VALUES (user_id, project_id, score)
+        VALUES (user_id, project_id, score);
     END$$
 
 DELIMITER ;
