@@ -3,4 +3,6 @@
 -- Quantity IN the TABLE items can be negative.
 CREATE TRIGGER decrease_quantity AFTER INSERT ON orders
     FOR EACH ROW
-	SET items.quantity = items.quantity - NEW.number;
+	UPDATE items
+	    SET items.quantity = items.quantity - NEW.number
+	    WHERE NEW.item_name = items.name;
