@@ -16,9 +16,9 @@ CREATE PROCEDURE AddBonus (user_id INT, project_name VARCHAR(255), score INT)
         SELECT id INTO project_id FROM projects
         WHERE name = project_name;
 
-        IF project_id IS NULL then
+        IF project_id IS NULL THEN
             INSERT INTO projects (name) VALUES (project_name); 
-            SET @project_id = LAST_INSERT_ID();
+            SET project_id = LAST_INSERT_ID();
         END IF;
 
         -- add NEW correction
