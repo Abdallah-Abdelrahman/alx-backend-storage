@@ -17,12 +17,13 @@ CREATE PROCEDURE AddBonus (user_id INT, project_name VARCHAR(255), score INT)
         WHERE name = project_name;
 
         IF @project_id IS NULL then
-            INSERT INTO projects (name) VALUES (name); 
+            INSERT INTO projects (name) VALUES (project_name); 
             SET @project_id = LAST_INSERT_ID();
         END IF;
 
         -- add NEW correction
-        INSERT INTO corrections VALUES (user_id, project_id, score)
+        INSERT INTO corrections (user_id, project_id, score)
+        VALUES (user_id, project_id, score)
     END$$
 
 DELIMITER ;
