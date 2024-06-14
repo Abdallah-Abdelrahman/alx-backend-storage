@@ -1,13 +1,15 @@
--- script that creates a trigger that resets the attribute valid_email only when the email has been changed.
+-- script that creates a TRIGGER that resets the attribute valid_email only when the email has been changed.
 -- 
--- Context: Nothing related to MySQL, but perfect for user email validation - distribute the logic to the database itself!
-DELIMITER $$;
-CREATE TRIGGER reset_valid_email
-BEFORE UPDATE ON users
+-- Context: Nothing related TO MySQL, but perfect FOR USER email validation - distribute the logic TO the DATABASE itself!
+DELIMITER $$
+
+CREATE TRIGGER `validate_email` AFTER UPDATE ON users
 FOR EACH ROW
 BEGIN
-	IF NEW.email != OLD.email THEN
-		SET NEW.valid_email = 0;
-	END IF;
-END;$$
+    IF OLD.email != NEW.email
+    THEN
+        SET valid_email = 0;
+    END IF;
+END$$
+
 DELIMITER ;
