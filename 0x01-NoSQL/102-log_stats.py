@@ -13,7 +13,7 @@ if __name__ == '__main__':
         count = nginx_coll.count_documents({'method': m})
         out += f'\tmethod {m}: {count}\n'
     count = nginx_coll.count_documents({'method': 'GET', 'path': '/status'})
-    out += f'{count} status check\nIPS:\n'
+    out += f'{count} status check\nIPs:\n'
     pipelines = [
             {
                 '$group': {'_id': '$ip', 'count': {'$count': {}}}
