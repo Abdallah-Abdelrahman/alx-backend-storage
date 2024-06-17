@@ -10,4 +10,4 @@ update = {$set:
 	}
 }
 
-db.school.updateMany(query, update)
+db.school.update(query, update)
