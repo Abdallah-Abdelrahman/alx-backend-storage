@@ -30,7 +30,8 @@ if __name__ == '__main__':
     SELECT ip, COUNT(*) AS count FROM nginx
 
     GROUP BY ip
-    ORDER BY count DESC;
+    ORDER BY count DESC
+    LIMIT 10;
     '''
     for ip in nginx_coll.aggregate(pipelines):
         out += f"\t{ip.get('_id')}: {ip.get('count')}\n"
