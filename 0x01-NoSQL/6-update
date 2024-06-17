@@ -4,7 +4,7 @@
 // The database name will be passed as option of mongo command
 query = {name: 'Holberton school'};
 update = {$set: {
-		name: 'Holbertion school',
+		name: 'Holberton school',
 		address: '972 Mission street'
 	}
 };
