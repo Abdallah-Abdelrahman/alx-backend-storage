@@ -10,4 +10,4 @@ update = {$set:
 };
 options = {upsert: true};
 
-db.school.update(query, update)
+db.school.updateMany(query, update)
