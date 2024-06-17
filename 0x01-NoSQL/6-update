@@ -9,5 +9,6 @@ update = {$set:
 		address: '972 Mission street'
 	}
 }
+options = {upsert: true}
 
-db.school.update(query, update)
+db.school.update(query, update, options)
