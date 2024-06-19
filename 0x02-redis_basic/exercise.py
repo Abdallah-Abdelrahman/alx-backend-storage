@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''Module defines `Cache` class '''
-from typing import Union
+from typing import Callable, Union
 import uuid
 import redis
 
@@ -19,3 +19,15 @@ class Cache:
             self._redis.set(k, data)
             return k
         return ''
+
+    def get(self, key: str, fn: Callable = lambda x: x) -> Union[str, int]:
+        '''convert the data back to the desired format'''
+        return fn(key)
+
+    def get_str(self, key: str) -> str:
+        '''paramertize `get` with str convertor'''
+        return self.get(key, fn=lambda x: x.decode('utf8'))
+
+    def get_int(self, key: str) -> int:
+        '''parameterize `` with int convertor '''
+        return self.get(key, fn=lambda x: int(x))
