@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 '''Module defines `Cache` class '''
-import redis
-import uuid
 from typing import Union
+import uuid
+import redis
 
 
 class Cache:
     '''Defines caching in redis'''
-    def __init__(self):
+    def __init__(self) -> None:
         '''Initialize the instance'''
         self._redis = redis.Redis()
         self._redis.flushdb()
