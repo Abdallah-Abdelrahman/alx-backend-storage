@@ -6,6 +6,29 @@ import redis
 from functools import wraps
 
 
+def call_history(method: Callable) -> Callable:
+    '''decorator that returns wrapper function.
+    it stores history of inputs and outputs
+    '''
+    @wraps(method)
+    def decorate(self, *args, **kw):
+        '''The real decorator'''
+        input_key = method.__qualname__ + ':inputs'
+        output_key = method.__qualname__ + ':outputs'
+
+        # Store the input arguments
+        self._redis.rpush(input_key, str(args))
+
+        # Execute the original function and get the output
+        result = method(self, *args, **kw)
+
+        # Store the output
+        self._redis.rpush(output_key, str(result))
+
+        return result
+    return decorate
+
+
 def count_calls(method: Callable) -> Callable:
     '''decorator that returns wrapper function.
     it counts how many times it's called for a key
@@ -28,6 +51,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @call_history
     @count_calls
     def store(self, data: Union[int, str, bytes, float]) -> str:
         '''generate a random key'''
