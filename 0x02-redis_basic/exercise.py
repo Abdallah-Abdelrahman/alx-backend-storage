@@ -3,6 +3,7 @@
 from typing import Callable, Union
 import uuid
 import redis
+from redis.commands.core import ResponseT
 
 
 class Cache:
@@ -20,9 +21,18 @@ class Cache:
             return k
         return ''
 
-    def get(self, key: str, fn: Callable = lambda x: x) -> Union[str, int]:
+    def get(self,
+            key: str,
+            fn: Callable = lambda x: x) -> Union[str, int, None, ResponseT]:
         '''convert the data back to the desired format'''
-        return fn(key)
+        data = self._redis.get(key)
+
+        if data is None:
+            return data
+        if fn:
+            return fn(data)
+
+        return data
 
     def get_str(self, key: str) -> str:
         '''paramertize `get` with str convertor'''
