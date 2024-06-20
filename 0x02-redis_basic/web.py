@@ -17,7 +17,7 @@ def cache_result(fn):
     def wrapper(url: str) -> str:
         '''The real wrapper'''
         # Check if the result is in cache
-        k = 'count:{}'.format(url)
+        k = 'cache:{}'.format(url)
         cached_result = local_redis.get(k)
         if cached_result:
             return cached_result.decode('utf8')
@@ -26,12 +26,13 @@ def cache_result(fn):
         result = fn(url)
 
         # Cache the result with the expiry of 10 seconds
+        # time in ms
         local_redis.setex(k, 10000, result)
         return result
     return wrapper
 
 
-def track_access_count(fn: Callable) -> Callable:
+def access_count(fn: Callable) -> Callable:
     '''Decorator to track how many times a URL was accessed.'''
     @wraps(fn)
     def wrapper(url: str) -> str:
@@ -47,7 +48,7 @@ def track_access_count(fn: Callable) -> Callable:
 
 
 @cache_result
-@track_access_count
+@access_count
 def get_page(url: str) -> str:
     '''Fetch the HTML content of a URL and return it.'''
     response = requests.get(url)
