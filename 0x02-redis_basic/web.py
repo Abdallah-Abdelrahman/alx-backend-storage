@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
 '''Module defines `get_page` function'''
+from typing import Callable
 import requests
 import redis
 from functools import wraps
-from typing import Callable
 
 # Initialize Redis client
 local_redis = redis.Redis()
 
 
-def cache_result(expiration: int):
+def cache_result(expiration: int = 1):
     '''Decorator to cache the result of a function,
     for a given expiration time.
     '''
     def decorator(func: Callable) -> Callable:
+        '''inner wrapper'''
         @wraps(func)
         def wrapper(url: str) -> str:
+            '''The real wrapper'''
             # Check if the result is in cache
             cached_result = local_redis.get(f"cache:{url}")
             if cached_result:
@@ -35,6 +37,7 @@ def track_access_count(func: Callable) -> Callable:
     '''Decorator to track how many times a URL was accessed.'''
     @wraps(func)
     def wrapper(url: str) -> str:
+        '''wrapper function to increment count'''
         # Increment the access count for the URL
         local_redis.incr(f"count:{url}")
         return func(url)
