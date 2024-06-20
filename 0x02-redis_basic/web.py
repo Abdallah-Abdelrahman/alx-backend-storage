@@ -26,7 +26,7 @@ def cache_result(fn):
         result = fn(url)
 
         # Cache the result with the expiry of 10 seconds
-        local_redis.setex('count:{}'.format(url), 10, result)
+        local_redis.setex(k, 10000, result)
         return result
     return wrapper
 
@@ -37,7 +37,7 @@ def track_access_count(fn: Callable) -> Callable:
     def wrapper(url: str) -> str:
         '''wrapper function to increment count'''
         # Increment the access count for the URL
-        k = f"count:{url}"
+        k = f'count:{url}'
         if not local_redis.get(k):
             local_redis.set(k, 1)
         else:
