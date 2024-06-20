@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 '''Module defines `Cache` class '''
-from typing import Callable, Union
+from typing import Any, Callable, Union
 import uuid
 import redis
-from redis.commands.core import ResponseT
 
 
 class Cache:
@@ -23,7 +22,7 @@ class Cache:
 
     def get(self,
             key: str,
-            fn: Callable = lambda x: x) -> Union[str, int, None, ResponseT]:
+            fn: Callable = lambda x: x) -> Any:
         '''convert the data back to the desired format'''
         data = self._redis.get(key)
 
